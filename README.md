@@ -265,11 +265,7 @@ GEMINI_EMBEDDING_MODEL = 'models/gemini-embedding-001'  # Embedding model
 GEMINI_LLM_MODEL = 'gemini-2.0-flash-lite'  # LLM model for answers
 ```
 
-**Available models:**
-- **Embedding models**: `models/gemini-embedding-001`, `models/text-embedding-004`
-- **LLM models**: `gemini-2.0-flash-lite`, `gemini-1.5-flash`, `gemini-1.5-pro`
-
-Check the [Gemini models documentation](https://ai.google.dev/gemini-api/docs/models) for the full list of available models and their capabilities.
+Check the [Gemini models documentation](https://ai.google.dev/gemini-api/docs/models) for available models and their capabilities.
 
 **Note:** Different models have different rate limits and may require a paid API plan.
 
