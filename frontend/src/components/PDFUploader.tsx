@@ -141,7 +141,7 @@ const PDFUploader: React.FC<PDFUploaderProps> = ({ onFileUpload, isUploading }) 
                   Drop your PDF here or click to browse
                 </p>
                 <p className="text-sm text-gray-500 dark:text-gray-400">
-                  Only PDF files up to 50MB are supported
+                  Only PDF files up to 1MB are supported
                 </p>
               </>
             )}

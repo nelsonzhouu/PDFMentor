@@ -5,8 +5,8 @@
  * security and proper file handling before sending to backend.
  */
 
-// Maximum allowed file size: 50MB (in bytes)
-const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+// Maximum allowed file size: 1MB (in bytes)
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
 
 // Allowed MIME type for uploads
 const ALLOWED_MIME_TYPE = 'application/pdf';

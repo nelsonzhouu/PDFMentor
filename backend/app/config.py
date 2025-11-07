@@ -23,7 +23,7 @@ class Config:
     GEMINI_LLM_MODEL = 'gemini-2.0-flash-lite'  # Free tier LLM model (fast and efficient)
     
     # File Upload Configuration
-    MAX_FILE_SIZE = int(os.getenv('MAX_FILE_SIZE', 50 * 1024 * 1024))  # 50MB default
+    MAX_FILE_SIZE = int(os.getenv('MAX_FILE_SIZE', 1 * 1024 * 1024))  # 1MB default
     UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'uploads')
     DATA_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'data')
     ALLOWED_EXTENSIONS = {'pdf'}  # Only PDF files allowed

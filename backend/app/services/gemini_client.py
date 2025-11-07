@@ -43,36 +43,63 @@ class GeminiClient:
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
         Generate embeddings for list of texts using Gemini
-        
+
         Uses the free embedding-001 model to convert text into
         768-dimensional vectors for semantic search.
-        
+
+        Batches requests to avoid rate limits - sends up to 50 texts
+        per API call instead of one-by-one.
+
         Args:
             texts: List of text strings to embed
-        
+
         Returns:
             List of embedding vectors (each is a list of floats)
-        
+
         Raises:
             Exception: If embedding generation fails
         """
         self._ensure_initialized()
-        
+
         try:
             embeddings = []
             model = current_app.config['GEMINI_EMBEDDING_MODEL']
-            
-            # Generate embedding for each text
-            for text in texts:
+            batch_size = 50  # Batch size under API limit of 100
+
+            current_app.logger.info(f"Processing {len(texts)} texts in batches of {batch_size}")
+
+            # Process texts in batches to avoid rate limits
+            for i in range(0, len(texts), batch_size):
+                batch = texts[i:i + batch_size]
+                current_app.logger.info(f"Batch {i//batch_size + 1}: Processing {len(batch)} texts")
+
+                # Send batch as single API request
                 result = genai.embed_content(
                     model=model,
-                    content=text,
+                    content=batch,
                     task_type="retrieval_document"  # Optimized for document retrieval
                 )
-                embeddings.append(result['embedding'])
-            
+                current_app.logger.info(f"Batch {i//batch_size + 1}: Successfully received embeddings")
+
+                # Extract embeddings from batch result
+                # API returns a list of embeddings when given a list of texts
+                batch_embeddings = result.get('embedding', result)
+
+                # Handle both single embedding and list of embeddings
+                if isinstance(batch_embeddings, list) and len(batch_embeddings) > 0:
+                    # Check if first element is itself a list (multiple embeddings)
+                    if isinstance(batch_embeddings[0], list):
+                        # Multiple embeddings returned
+                        embeddings.extend(batch_embeddings)
+                    else:
+                        # Single embedding returned (batch size was 1)
+                        embeddings.append(batch_embeddings)
+                else:
+                    # Fallback for unexpected format
+                    embeddings.append(batch_embeddings)
+
             return embeddings
-        
+
         except Exception as e:
             raise Exception(f"Failed to generate embeddings: {str(e)}")
     
