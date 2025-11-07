@@ -125,7 +125,7 @@ Frontend will run on `http://localhost:3000`
 ## Security Features
 
 - ✅ **File type validation** (PDF magic bytes check)
-- ✅ **File size limits** (50MB max)
+- ✅ **File size limits** (1MB max)
 - ✅ **Extension validation** (PDF only)
 - ✅ **Filename sanitization** (prevents path traversal)
 - ✅ **Rate limiting** (40 questions/hour)
@@ -218,7 +218,7 @@ RATE_LIMIT_QUESTIONS=40
 RATE_LIMIT_WINDOW=3600
 
 # File Upload
-MAX_FILE_SIZE=52428800  # 50MB in bytes
+MAX_FILE_SIZE=1048576  # 1MB in bytes
 UPLOAD_FOLDER=uploads
 
 # CORS
@@ -227,8 +227,29 @@ CORS_ORIGINS=http://localhost:3000
 
 ## Free Tier Limits
 
-- **Gemini API**: 60 requests per minute (free tier)
-- **File size**: 50MB max
+**⚠️ Important: This application is configured for small PDFs only (1MB max)**
+
+Due to Gemini API free tier limitations, this project is optimized for small PDF files to avoid hitting daily quota limits. Here's why:
+
+- **Daily quota**: 1,000 embedding requests per day (free tier)
+- **Processing cost**: Large PDFs can use 100+ embedding requests
+- **File size limit**: 1MB max (configurable)
+
+### Using Larger Files
+
+If you need to process larger PDFs, you have two options:
+
+1. **Upgrade to a paid Gemini API plan** - Get higher quotas and rate limits at https://ai.google.dev/pricing
+2. **Increase the file size limit locally** - Change `MAX_FILE_SIZE` in your `.env` file:
+   ```env
+   MAX_FILE_SIZE=52428800  # 50MB in bytes
+   ```
+   Note: You may hit daily quota limits with larger files on the free tier.
+
+### Current Limits
+
+- **Gemini API**: 100 requests per minute, 1,000 requests per day (free tier)
+- **File size**: 1MB max (default configuration)
 - **Questions**: 40 per hour per session
 - **Models used**:
   - Embeddings: `models/gemini-embedding-001`
@@ -260,9 +281,10 @@ CORS_ORIGINS=http://localhost:3000
 - Check Node version: `node --version` (needs 18+)
 
 ### PDF upload fails
-- Check file size (must be under 50MB)
+- Check file size (must be under 1MB by default)
 - Ensure file is a valid PDF
 - Check backend logs for detailed error
+- If you hit quota limits, wait until midnight Pacific Time for reset
 
 ### Rate limit issues
 - Rate limit resets after 1 hour
