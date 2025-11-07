@@ -55,7 +55,7 @@ PDFMentor/
 ### Prerequisites
 - **Node.js 18+** and npm
 - **Python 3.11+** (3.12 recommended)
-- **Google Gemini API key** (free at https://makersuite.google.com/app/apikey)
+- **Google Gemini API key** (free at https://aistudio.google.com/api-keys)
 
 ### Backend Setup
 
